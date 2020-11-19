@@ -1,23 +1,131 @@
 <template>
-  <img alt="Logo der GBS Schulen München" src="./assets/logo.png" />
-  <MyComponent ueberschrift="Hallo I3A!" nochwas="3" />
-  <MyList />
-  <MyForm />
-  <MyComponent ueberschrift="Servus!" nochwas="17" />
-
+  <div class="container">
+    <MyHeader />
+    <main>
+      <MyForm @hinzufuegen="hinzufuegen" />
+      <ul class="list-group">
+        <li
+          class="list-group-item d-flex justify-content-between"
+          v-for="link in links"
+          :key="link.id"
+        >
+          <a :href="link.url">{{ link.linktext }}</a>
+          <div>
+            <span class="badge badge-primary">{{ link.votes }}</span>
+            <button
+              class="btn btn-primary btn-sm ml-1"
+              @click="upvote(link.id)"
+              aria-label="Hochvoten"
+            >
+              <i class="lni lni-thumbs-up"></i>
+            </button>
+            <button
+              class="btn btn-danger btn-sm ml-1"
+              @click="deleteLink(link.id)"
+              aria-label="Löschen"
+            >
+              <i class="lni lni-trash"></i>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </main>
+    <div class="footer mt-2">
+      <footer class="border alert alert-info">
+        Diese Links werden wurden von Franz Kohnle gesammelt.
+      </footer>
+    </div>
+  </div>
 </template>
 
 <script>
-import MyComponent from "./components/MyComponent.vue";
+import MyHeader from "./components/MyHeader.vue";
 import MyForm from "./components/MyForm.vue";
-import MyList from "./components/MyList.vue";
 
 export default {
   name: "App",
   components: {
-    MyComponent,
+    MyHeader,
     MyForm,
-    MyList
+  },
+  data() {
+    return {
+      links: [
+        {
+          id: 0,
+          linktext: "kohnlehome.de",
+          url: "http://kohnlehome.de",
+          votes: 1,
+        },
+        {
+          id: 1,
+          linktext: "Offizielle Website der GBS",
+          url: "https://gbsschulen.de",
+          votes: 3,
+        },
+      ],
+      nextId: 4,
+    };
+  },
+  methods: {
+    upvote(id) {
+      console.log("+");
+      //this.links[id].votes++; Funktioniert nicht, wenn umsortiert wurde
+      const clickedLink = this.links.find((link) => link.id === id);
+      clickedLink.votes++;
+      this.sortieren();
+      this.speichern();
+    },
+    deleteLink(id) {
+      // index des zu löschenden Links ermitteln
+      let index = this.links.findIndex((link) => link.id === id);
+      // Element an der Stelle index aus Array entfernen
+      this.links.splice(index, 1);
+      this.speichern();
+    },
+    sortieren() {
+      this.links.sort(function (link1, link2) {
+        return link2.votes - link1.votes;
+      });
+    },
+    laden() {
+      if (localStorage.getItem("links")) {
+        const linksString = localStorage.getItem("links");
+        this.links = JSON.parse(linksString);
+      } else {
+        this.links = [
+          {
+            id: 0,
+            linktext: "kohnlehome.de",
+            url: "http://kohnlehome.de",
+            votes: 1,
+          },
+          {
+            id: 1,
+            linktext: "Offizielle Website der GBS",
+            url: "https://gbsschulen.de",
+            votes: 3,
+          },
+        ];
+      }
+    },
+    speichern() {
+      const linksString = JSON.stringify(this.links);
+      localStorage.setItem("links", linksString);
+    },
+    hinzufuegen(newLink) {
+      this.nextId = this.nextId + 1;
+      newLink.id = this.nextId;
+      this.links.push(newLink);
+      this.speichern();
+    },
+  },
+  mounted() {
+    this.$root.$on("hinzufuegen", () => {
+      this.hinzufuegen;
+    });
+    this.laden();
+    this.sortieren();
   },
 };
 </script>

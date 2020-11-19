@@ -1,36 +1,36 @@
 <template>
-  <form>
-    <h1>MyForm</h1>
-    <h2>Text</h2>
-    <input v-model="textString" placeholder="edit me" />
-    <p>{{ textString }}</p>
+  <div class="border mb-2 bg-light p-2">
+    <legend>Neuer Link</legend>
+    <div class="form-group">
+      <label for="inputName">Name</label>
+      <input
+        v-model="newName"
+        class="form-control"
+        id="inputName"
+        type="text"
+        placeholder="Name"
+      />
+    </div>
 
-    <h2>Number</h2>
-    <input type="number" v-model.number="zahl" />
-    <p>{{ zahl }}</p>
+    <div class="form-group">
+      <label for="inputUrl">Url</label>
+      <input
+        v-model="newUrl"
+        class="form-control"
+        id="inputUrl"
+        type="text"
+        placeholder="Url"
+      />
+    </div>
 
-    <h2>Checkbox</h2>
-    <input type="checkbox" v-model="angeklickt" />
-    <p>{{ angeklickt }}</p>
-
-    <h2>Radiobuttons</h2>
-    <input
-      type="radio"
-      value="entweder"
-      v-model="auswahlString"
-      name="gruppe"
-    />
-    <input type="radio" value="oder" v-model="auswahlString" name="gruppe" />
-    <p>{{ auswahlString }}</p>
-
-    <h2>Select</h2>
-    <select v-model="selectedString">
-      <option>A</option>
-      <option>B</option>
-      <option>C</option>
-    </select>
-    <p>{{ selectedString }}</p>
-  </form>
+    <button
+      @click="hinzufuegen"
+      class="btn btn-primary mb-1"
+      aria-label="Hinzufügen"
+    >
+      Hinzufügen
+    </button>
+  </div>
 </template>
 
 <script>
@@ -38,19 +38,24 @@ export default {
   name: "MyForm",
   data() {
     return {
-      textString: "hallo servus",
-      zahl: 0,
-      angeklickt: false,
-      auswahlString: "oder",
-      selectedString: "C",
+      newName: "",
+      newUrl: "",
     };
+  },
+  methods: {
+    hinzufuegen() {
+      if (this.newName != "" && this.newUrl != "") {
+        const newLink = {
+          linktext: this.newName,
+          url: this.newUrl,
+          votes: 0,
+        };
+        this.$root.$emit("hinzufuegen", newLink);
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-form {
-  background-color: cornsilk;
-  border: 1px solid black;
-}
 </style>
