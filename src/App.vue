@@ -121,9 +121,6 @@ export default {
     },
   },
   mounted() {
-    this.$root.$on("hinzufuegen", () => {
-      this.hinzufuegen;
-    });
     this.laden();
     this.sortieren();
   },

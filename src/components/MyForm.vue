@@ -40,17 +40,18 @@ export default {
     return {
       newName: "",
       newUrl: "",
+      newLink: {},
     };
   },
   methods: {
     hinzufuegen() {
       if (this.newName != "" && this.newUrl != "") {
-        const newLink = {
+        this.newLink = {
           linktext: this.newName,
           url: this.newUrl,
           votes: 0,
         };
-        this.$root.$emit("hinzufuegen", newLink);
+        this.$emit("hinzufuegen", this.newLink);
       }
     },
   },
