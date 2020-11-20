@@ -64,8 +64,22 @@ export default {
           votes: 3,
         },
       ],
-      nextId: 4,
     };
+  },
+  computed: {
+    maxId() {
+      let maximum = -1;
+      if (this.links.length > 0) {
+        maximum = this.links[0].id;
+        for (let i = 1; i < this.links.length; i++) {
+          const aktuellerLink = this.links[i];
+          if (aktuellerLink.id > maximum) {
+            maximum = aktuellerLink.id;
+          }
+        }
+      }
+      return maximum;
+    },
   },
   methods: {
     upvote(id) {
@@ -114,8 +128,7 @@ export default {
       localStorage.setItem("links", linksString);
     },
     hinzufuegen(newLink) {
-      this.nextId = this.nextId + 1;
-      newLink.id = this.nextId;
+      newLink.id = this.maxId + 1;
       this.links.push(newLink);
       this.speichern();
     },
