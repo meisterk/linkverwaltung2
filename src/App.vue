@@ -57,11 +57,7 @@ export default {
       this.$store.dispatch('upvote', id);
     },
     deleteLink(id) {
-      // index des zu löschenden Links ermitteln
-      let index = this.links.findIndex((link) => link.id === id);
-      // Element an der Stelle index aus Array entfernen
-      this.links.splice(index, 1);
-      this.speichern();
+      this.$store.dispatch('deleteLink', id);
     },
     
   },

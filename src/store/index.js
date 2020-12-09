@@ -64,6 +64,14 @@ export default createStore({
       context.dispatch('speichern');
     },
 
+    deleteLink(context, id) {
+      // index des zu löschenden Links ermitteln
+      let index = this.state.links.data.findIndex((link) => link.id === id);
+      // Element an der Stelle index aus Array entfernen
+      this.state.links.data.splice(index, 1);
+      context.dispatch('speichern');
+    },
+
     maxId() {
       let maximum = -1;
       if (this.state.links.data.length > 0) {
