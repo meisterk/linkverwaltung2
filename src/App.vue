@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    {{ this.$store.getters.links.default }}
     <MyHeader />
     <main>
       <MyForm @hinzufuegen="hinzufuegen" />
