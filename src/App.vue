@@ -6,7 +6,7 @@
       <ul class="list-group">
         <li
           class="list-group-item d-flex justify-content-between"
-          v-for="link in links"
+          v-for="link in this.$store.getters.links.data"
           :key="link.id"
         >
           <a :href="link.url">{{ link.linktext }}</a>
@@ -48,24 +48,7 @@ export default {
     MyHeader,
     MyForm,
   },
-  data() {
-    return {
-      links: [
-        {
-          id: 0,
-          linktext: "kohnlehome.de",
-          url: "http://kohnlehome.de",
-          votes: 1,
-        },
-        {
-          id: 1,
-          linktext: "Offizielle Website der GBS",
-          url: "https://gbsschulen.de",
-          votes: 3,
-        },
-      ],
-    };
-  },
+  
   computed: {
     
   },
@@ -85,18 +68,10 @@ export default {
       this.links.splice(index, 1);
       this.speichern();
     },
-    sortieren() {
-      this.links.sort(function (link1, link2) {
-        return link2.votes - link1.votes;
-      });
-    },
-    
-    
-    
   },
   mounted() {
     this.$store.dispatch('laden');
-    this.sortieren();
+    this.$store.dispatch('sortieren');    
   },
 };
 </script>

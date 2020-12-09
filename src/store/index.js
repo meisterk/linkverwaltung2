@@ -43,10 +43,16 @@ export default createStore({
       }
     },
 
-    hinzufuegen(newLink) {
-      newLink.id = this.maxId + 1;
+    hinzufuegen(context, newLink) {
+      newLink.id = context.dispatch('maxId') + 1;
       this.state.links.data.push(newLink);
-      this.speichern();
+      context.dispatch('speichern');
+    },
+
+    sortieren() {
+      this.state.links.data.sort(function (link1, link2) {
+        return link2.votes - link1.votes;
+      });
     },
 
     maxId() {
