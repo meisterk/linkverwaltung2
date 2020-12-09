@@ -55,6 +55,15 @@ export default createStore({
       });
     },
 
+    upvote(context, id) {
+      console.log("+");
+      //this.links[id].votes++; Funktioniert nicht, wenn umsortiert wurde
+      const clickedLink = this.state.links.data.find((link) => link.id === id);
+      clickedLink.votes++;
+      context.dispatch('sortieren');
+      context.dispatch('speichern');
+    },
+
     maxId() {
       let maximum = -1;
       if (this.state.links.data.length > 0) {

@@ -54,12 +54,7 @@ export default {
   },
   methods: {
     upvote(id) {
-      console.log("+");
-      //this.links[id].votes++; Funktioniert nicht, wenn umsortiert wurde
-      const clickedLink = this.links.find((link) => link.id === id);
-      clickedLink.votes++;
-      this.sortieren();
-      this.speichern();
+      this.$store.dispatch('upvote', id);
     },
     deleteLink(id) {
       // index des zu löschenden Links ermitteln
@@ -68,6 +63,7 @@ export default {
       this.links.splice(index, 1);
       this.speichern();
     },
+    
   },
   mounted() {
     this.$store.dispatch('laden');
