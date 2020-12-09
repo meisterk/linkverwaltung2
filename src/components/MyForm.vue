@@ -51,7 +51,7 @@ export default {
           url: this.newUrl,
           votes: 0,
         };
-        this.$emit("hinzufuegen", this.newLink);
+        this.$store.dispatch("hinzufuegen", this.newLink);
       }
     },
   },
